@@ -1,0 +1,59 @@
+{
+  "version": "0.1.0",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "engines": {
+    "node": ">=10"
+  },
+  "scripts": {
+    "start": "tsdx watch",
+    "build": "tsdx build",
+    "test": "tsdx test",
+    "lint": "tsdx lint src",
+    "prepare": "tsdx build",
+    "size": "size-limit",
+    "analyze": "size-limit --why"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsdx lint src"
+    }
+  },
+  "prettier": {
+    "printWidth": 80,
+    "semi": false,
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
+  "name": "sanity-plugin-global-link",
+  "author": "Sanity.io",
+  "module": "dist/sanity-plugin-studio-smartling.esm.js",
+  "homepage": "https://github.com/sanity-io/sanity-plugin-studio-smartling#readme",
+  "size-limit": [
+    {
+      "path": "dist/sanity-plugin-studio-smartling.cjs.production.min.js",
+      "limit": "10 KB"
+    },
+    {
+      "path": "dist/sanity-plugin-studio-smartling.esm.js",
+      "limit": "10 KB"
+    }
+  ],
+  "devDependencies": {
+    "@sanity/types": "^2.22.3",
+    "@size-limit/preset-small-lib": "^4.7.0",
+    "husky": "^4.3.0",
+    "size-limit": "^4.7.0",
+    "tsdx": "^0.14.1",
+    "tslib": "^2.0.3",
+    "typescript": "^4.0.5"
+  },
+  "dependencies": {
+    "sanity-translations-tab": "^2.0.6"
+  }
+}
