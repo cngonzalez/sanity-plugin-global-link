@@ -17,7 +17,7 @@ export const getTranslationTask = async (
       locales: [],
     }
   }
-  if (!secrets) { 
+  if (!secrets) {
     throw Error('No secrets provided. Please check plugin readme.')
   }
   const token = await authenticate(secrets)

@@ -2,7 +2,7 @@ import { Secrets } from 'sanity-translations-tab'
 //@ts-ignore
 import sanityClient from 'part:@sanity/base/client'
 
-export const globalLinkProxy = process.env.SANITY_STUDIO_GLOBALLINK_PROXY || ""
+export const globalLinkProxy = process.env.SANITY_STUDIO_GLOBALLINK_PROXY || ''
 const client = sanityClient.withConfig({ apiVersion: '2021-10-21' })
 
 //TO ASK: is this going to be constant for all users?

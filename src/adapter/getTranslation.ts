@@ -12,8 +12,7 @@ export const getTranslation = async (
   localeId: string,
   secrets: Secrets | null
 ) => {
-  
-  if (!secrets) { 
+  if (!secrets) {
     throw Error('No secrets provided. Please check plugin readme.')
   }
 
@@ -44,7 +43,7 @@ export const getTranslation = async (
   const downloadId = (await fetch(globalLinkProxy, { headers: downloadHeaders })
     .then(res => res.json())
     .then(res => res.downloadId)) as string
-  
+
   await pollForDownload(downloadId, submissionId, token)
   return handleFileDownload(downloadId, submissionId, taskId, localeId, token)
 }
@@ -54,17 +53,19 @@ const pollForDownload = async (
   submissionId: string,
   token: string
 ) => {
-    const processingFinished = await fetch(globalLinkProxy, {
-      headers: {
-        'X-URL': `${baseUrl}/rest/v0/submissions/${submissionId}/download?downloadId=${downloadId}`,
-        authorization: `Bearer ${token}`,
-      },
-    })
+  const processingFinished = await fetch(globalLinkProxy, {
+    headers: {
+      'X-URL': `${baseUrl}/rest/v0/submissions/${submissionId}/download?downloadId=${downloadId}`,
+      authorization: `Bearer ${token}`,
+    },
+  })
     .then(res => res.json())
     .then(res => res.processingFinished)
 
   if (!processingFinished) {
-    console.info('Still awaiting Global Link download request to be processed...')
+    console.info(
+      'Still awaiting Global Link download request to be processed...'
+    )
     await new Promise(resolve => setTimeout(resolve, 3000))
     return pollForDownload(downloadId, submissionId, token)
   } else {

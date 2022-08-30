@@ -16,9 +16,10 @@ const createTask = async (
   const metadata = await getDocumentTranslationMetadata(documentId)
   //TODO: if a job exists for any of these locales, cancel it
   //This behavior should be required by GlobalLink certification
-  if (metadata) { }
+  if (metadata) {
+  }
 
-  if (!secrets) { 
+  if (!secrets) {
     throw Error('No secrets provided. Please check plugin readme.')
   }
 
