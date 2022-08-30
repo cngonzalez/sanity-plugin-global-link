@@ -24,15 +24,15 @@ The following functions are used in the plugin. They are all contained in the `.
 
 1. `getLocales` - This function is used to retrieve the locales that are available for the project. It is called when the tab is loaded, and the locales are then used to populate the checkboxes in the UI.
 2. `getTranslationTask` - Like `getLocales`, this function is passively called on the tab load. It is used to retrieve the translation tasks for the document, if one exists. If one does not exist, it will return an empty array. We are keeping track of translation tasks via a metadata document, following the pattern you might see in other Sanity implementations -- for example, our workflow studio. These metadata documents are 1-to-1 with their parent documents, and they look like:
-```
-{
-  "_id": "globalLink-metadata.${documentId}",
-  "_type": "globalLink.metadata",
-  "jobs": {
-    ${localeId, e.g. 'de_DE'}: ${submission ID for the job that started a task to translate to this locale}
-  }
-}
-```
-The submission IDs determined from the "jobs" object are used to retrieve the translation task progress via the REST API.
+    ```json
+    {
+      "_id": "globalLink-metadata.${documentId}",
+      "_type": "globalLink.metadata",
+      "jobs": {
+        ${localeId, e.g. 'de_DE'}: ${submission ID for the job that started a task to translate to this locale}
+      }
+    }
+    ```
+    The submission IDs determined from the "jobs" object are used to retrieve the translation task progress via the REST API.
 3. `createTask` - This function is called when an end user selects locales and clicks "Create Job". A number of actions happen: a "submission" is created in Global Link, serialized content is uploaded to Global Link, the submission is saved, and finally a metadata document is created or edited with the updated submission ID. The submission ID is used to retrieve the translation task progress via the REST API, as explained above.
 4.  `getTranslation` - This function is called when an end user clicks the "Import" button in the UI. The function retrieves the translation from Global Link using the submission ID found in the metadata, downloads a ZIP, deserializes it, and merges it with the existing content. The merged content is then saved to Sanity. (The deserialization and merge logic are part of the configuration of `TranslationsTab`.)
