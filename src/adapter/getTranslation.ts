@@ -44,34 +44,33 @@ export const getTranslation = async (
   const downloadId = (await fetch(globalLinkProxy, { headers: downloadHeaders })
     .then(res => res.json())
     .then(res => res.downloadId)) as string
+  
+  await pollForDownload(downloadId, submissionId, token)
+  return handleFileDownload(downloadId, submissionId, taskId, localeId, token)
+}
 
-  return new Promise(resolve => {
-    setTimeout(function() {
-      fetch(globalLinkProxy, {
-        headers: {
-          'X-URL': `${baseUrl}/rest/v0/submissions/${submissionId}/download?downloadId=${downloadId}`,
-          authorization: `Bearer ${token}`,
-        },
-      })
-        .then(res => res.json())
-        .then(res => res.processingFinished)
-        .then(processingFinished => {
-          if (processingFinished) {
-            return resolve(
-              handleFileDownload(
-                downloadId,
-                submissionId,
-                taskId,
-                localeId,
-                token
-              )
-            )
-          } else {
-            return {}
-          }
-        })
-    }, 3000)
-  })
+const pollForDownload = async (
+  downloadId: string,
+  submissionId: string,
+  token: string
+) => {
+    const processingFinished = await fetch(globalLinkProxy, {
+      headers: {
+        'X-URL': `${baseUrl}/rest/v0/submissions/${submissionId}/download?downloadId=${downloadId}`,
+        authorization: `Bearer ${token}`,
+      },
+    })
+    .then(res => res.json())
+    .then(res => res.processingFinished)
+
+  if (!processingFinished) {
+    console.info('Still awaiting Global Link download request to be processed...')
+    await new Promise(resolve => setTimeout(resolve, 3000))
+    return pollForDownload(downloadId, submissionId, token)
+  } else {
+    console.info('Global Link download request processed. Starting download...')
+    return
+  }
 }
 
 const handleFileDownload = (

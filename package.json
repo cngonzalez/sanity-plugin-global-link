@@ -54,6 +54,7 @@
     "typescript": "^4.0.5"
   },
   "dependencies": {
+    "jszip": "^3.10.1",
     "sanity-translations-tab": "^2.0.6"
   }
 }
